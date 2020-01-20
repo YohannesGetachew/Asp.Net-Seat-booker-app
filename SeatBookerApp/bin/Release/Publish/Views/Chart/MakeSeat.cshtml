@@ -1,0 +1,105 @@
+﻿@model IEnumerable<SeatBookerApp.Chart>
+
+@{
+    ViewBag.Title = "MakeSeat";
+}
+
+
+
+
+
+
+@{
+    int index = (int)ViewData["index"];
+
+    var item = Model.ElementAt(index);
+    int row = (int)item.Seat_Row;
+    int column = (int)item.Seat_Column;
+
+
+    string row_division = item.Row_Div_No;
+    string[] row_div = row_division.Split(',');
+
+
+    string column_division = item.Col_Div_No;
+    string[] col_div = column_division.Split(',');
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Generator</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+    <link rel="stylesheet" href="~/Content/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/css/styles.min.css">
+</head>
+<body style="background-color:rgb(230,230,230);">
+    <input type="button" class="btn btn-primary" value="<--" style="margin-top:2px; margin-bottom:1px; margin-left:2px;" onclick="@("window.location.href='" + @Url.Action("SeatingChart","Chart") +"'")">
+
+    <table style="margin-left:80px; margin-top:50px; ">
+
+        @for (int i = 0; i < row; i++)
+        {
+
+
+
+
+            int pos = Array.IndexOf(row_div, i.ToString());
+
+            if (pos == -1)
+            {
+
+                <tr>
+                    @for (int j = 0; j < column; j++)
+                    {
+
+                        int colPos = Array.IndexOf(col_div, j.ToString());
+
+                        if (colPos == -1)
+                        {
+                            <td>
+                                <button style="width:70px;">@i@j </button>
+                            </td>
+                        }
+
+                        else
+                        {
+                            <td>
+                                &nbsp;
+                            </td>
+
+                        }
+
+
+                    }
+                </tr>
+            }
+
+            else
+            {
+                <tr>
+                    @for (int j = 0; j < column; j++)
+                    {
+                    <td>
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+
+                    </td>
+                    }
+                </tr>
+            }
+
+
+        }
+
+
+    </table>
+    <script src="~/Scripts/assets/js/jquery.min.js"></script>
+    <script src="~/Scripts/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "FrontPage";
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Front Page</title>
+    <link rel="stylesheet" href="~/Content/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/css/styles3.min.css">
+    <style>
+        .imge {
+            margin-top: 150px;
+            background-color:transparent;
+            
+        }
+        body {
+            background-size:cover;
+        }
+        
+
+    </style>
+
+</head>
+
+<body style= "background-image:url('@Url.Content("~/Content/img/chair4.jpg")');">
+
+ 
+        <div class="imge">
+    <div class="highlight-clean" >
+
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center">Grab A Seat At Ease</h2>
+                <p class="text-center" style="font-size:20px;">Weather you are an event handler or an event participator this is the site for you</p>
+            </div>
+            <div class="buttons">
+                @Html.ActionLink("Register", "RegisterForm", "Chart", null, new { @class = "btn btn-primary" })
+
+
+                @Html.ActionLink("Log-in", "Login", "Chart", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+        </div>
+    <script src="~/Scripts/assets/js/jquery.min.js"></script>
+    <script src="~/Scripts/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

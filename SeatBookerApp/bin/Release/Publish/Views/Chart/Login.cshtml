@@ -1,0 +1,76 @@
+﻿@model SeatBookerApp.Login_Table
+@{
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="~/Content/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/css/styles3.min.css">
+
+    <style>
+        #bg-block {
+            background-size: cover;
+            background-position: center center;
+           
+        }
+        body {
+
+            overflow:hidden;
+        }
+    </style>
+</head>
+
+<body>
+   
+    <div class="container-fluid">
+        <div class="row mh-100vh">
+            <div class="col-10 col-sm-8 col-md-6 col-lg-6 offset-1 offset-sm-2 offset-md-3 offset-lg-0 align-self-center d-lg-flex align-items-lg-center align-self-lg-stretch bg-white p-5 rounded rounded-lg-0 my-5 my-lg-0" id="login-block">
+                <div class="m-auto w-lg-75 w-xl-50">
+                    <h2 class="text-info font-weight-light mb-5">Grab A Seat</h2>
+                    @using (Html.BeginForm("Login", "Chart", FormMethod.Post))
+
+                    {
+                    <div class="form-group">
+                        <label class="text-secondary">User Name</label>
+                        @Html.TextBoxFor(model => model.User_Name, new { @required="true", @placeholder = "User Name", @class = "form-control" })
+
+                    </div>
+                    <div class="form-group">
+                        <label class="text-secondary">Password</label>
+
+                        @Html.PasswordFor(model => model.Password, new { @required = "true", @placeholder = "password", @class = "form-control" })
+                    </div>
+                    <div class="dropdown">
+                        @{
+                            string[] role = { "Event-Handler", "Participator" };
+
+                            @Html.DropDownListFor(model => model.Role, new SelectList(role), "Select Role", new { @required = "true", })
+
+                        }
+                    </div>
+                        <input class="btn btn-primary" type="submit" value="Log in" style="margin-left:0px;margin-top:15px;">
+
+                    }
+
+                    <p class="mt-3 mb-0">
+                        @Html.ActionLink("You Don't Have an Account? Click here", "RegisterForm", "Chart", null, new { @class = "text-info small" })
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-end" id="bg-block" style=" background-image:url('@Url.Content("~/Content/img/chair.jpg")'); ">
+
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/assets/js/jquery.min.js"></script>
+    <script src="~/Scripts/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+

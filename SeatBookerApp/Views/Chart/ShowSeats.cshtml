@@ -1,0 +1,214 @@
+﻿@model SeatBookerApp.Models.All
+
+
+@{
+    ViewBag.Title = "ShowSeats";
+}
+
+@{
+    int index = (int)ViewData["i"];
+
+    var item = Model.chart2.ElementAt(index);
+    int row = (int)item.Seat_Row;
+    int column = (int)item.Seat_Column;
+
+
+    string row_division = item.Row_Div_No;
+    string[] row_div = row_division.Split(',');
+
+
+    string column_division = item.Col_Div_No;
+    string[] col_div = column_division.Split(',');
+
+
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Generator</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+    <link rel="stylesheet" href="~/Content/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/css/styles.min.css">
+    <link rel="stylesheet" href="~/fonts/font-awesome.min.css" />
+    <style>
+        .btn-primary {
+
+            width:60px;
+            height:30px;
+        }
+      
+    </style>
+
+</head>
+<body style="background-color:aliceblue;">
+   
+ <button class="btn btn-flat" style="background-color:rgb(230,230,230);"  onclick="@("window.location.href='" + @Url.Action("BookEvents", "Chart") + "'")" ><i  class="fa fa-arrow-left"></i></button>
+
+   
+    <table id="table1" class="col-md-offset-2" style="margin-left:80px; margin-top:50px; ">
+
+
+        @for (int i = 0; i < row; i++)
+        {
+
+
+
+
+            int pos = Array.IndexOf(row_div, i.ToString());
+
+
+            if (pos == -1)
+            {
+
+                <tr>
+
+                    @for (int j = 0; j < column; j++)
+                    {
+                        int colPos = Array.IndexOf(col_div, j.ToString());
+
+
+
+                        string button_index = i.ToString() + j.ToString();
+                        button_index = button_index.Trim();
+
+                        Seating userExistance = Model.seating2.Find(c => c.User_Name == (string)Session["name"] && c.Hold_Places == button_index && c.Event_Name == (string)ViewData["Name"]);
+
+                        Seating guestExistance = Model.seating2.Find(c => c.User_Name != (string)Session["name"] && c.Hold_Places == button_index && c.Event_Name == (string)ViewData["Name"]);
+
+
+                        if (colPos == -1)
+                        {
+                            Seating user_Exists = Model.seating2.Find(c => c.User_Name == (string)Session["name"]);
+
+
+                            if (userExistance == null && guestExistance == null && user_Exists == null)
+                            {
+
+                                <td>
+
+                                    @{
+                                        string aid = @i.ToString() + @j.ToString();
+                                        string existance = "No_one";
+
+                                    }
+                                    @Html.ActionLink(aid, "ShowSeats", "Chart", new { aid, existance, i = (int)ViewData["i"], Name = ViewData["Name"] }, new { @class = "btn btn-primary", onclick = "return confirm('Are you sure you Want to book this seat');" })
+                                </td>
+                            }
+
+                            else if (userExistance == null && guestExistance == null && user_Exists != null)
+                            {
+
+
+                                <td>
+
+                                    @{
+                                        string aid = @i.ToString() + @j.ToString();
+                                        string existance = "No_one+Booked";
+
+                                    }
+                                    @Html.ActionLink(aid, "ShowSeats", "Chart", new { aid, existance, i = (int)ViewData["i"], Name = ViewData["Name"] }, new { @class = "btn btn-primary", onclick = "return confirm('You Already Booked a seat if you proceed old seat will be deleted');" })
+
+                                </td>
+                            }
+
+                            else if (userExistance != null && guestExistance == null)
+                            {
+                                <td>
+
+                                    @{
+                                        string aid = @i.ToString() + @j.ToString();
+                                        string existance = "userExists";
+                                    }
+                                    @Html.ActionLink(aid, "ShowSeats", "Chart", new { aid, existance, i = (int)ViewData["i"], Name = ViewData["Name"] }, new { @class = "btn btn-primary button", @style = "background-color:red;", onclick = "return confirm('You Already Booked a seat if you proceed seat will be deleted');" })
+                                </td>
+                            }
+
+                            else if (guestExistance != null)
+                            {
+                                <td>
+                                    @{
+                                        string aid = @i.ToString() + @j.ToString();
+                                        string existance = "guestExist";
+                                    }
+                                    @Html.ActionLink(aid, "ShowSeats", "Chart", new { aid, existance }, new { @class = "btn btn-primary", @style = "background-color:green;", id = "guestButton" })
+                                </td>
+                            }
+                      }
+                            else
+                            {
+                                <td>
+                                  <button></button>
+                                </td>
+
+                            }
+
+
+
+
+                        
+                    }
+
+                </tr>
+
+
+            }
+            else
+            {
+                <tr>
+                    @for (int j = 0; j < column; j++)
+                    {
+                    <td>
+                      <button></button>
+
+                    </td>
+                    }
+                </tr>
+            }
+
+
+        }
+
+
+
+
+
+
+    </table>
+        
+
+                @section scripts
+        {
+                    <script>
+
+
+                        $(document).ready(function () {
+                            $("#guestButton").on("click", function () {
+                                alert("Seat taken by another Person");
+                                event.preventDefault();
+
+                            });
+
+                            $("#userButton").on("click", function () {
+                                alert("You already selected this seat");
+                                event.preventDefault();
+
+                            });
+
+                        });
+
+
+                    </script>
+                }
+
+
+            
+            <script src="~/Scripts/assets/js/jquery.min.js"></script>
+            <script src="~/Scripts/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
